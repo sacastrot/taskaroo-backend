@@ -23,9 +23,13 @@ app.add_middleware(
 )
 
 
-
 # Dependency
 def get_db():
+    """
+    Create a new database session for the request.
+    :return: (Session): The database session.
+    """
+
     db = SessionLocal()
     try:
         yield db
@@ -33,39 +37,81 @@ def get_db():
         db.close()
 
 
-@app.post("/users/",tags=["User"], response_model=schemas.User)
+@app.post("/users/", tags=["User"], response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    """
+    Creates a new user in the database.
+
+    :param user: (schemas.UserCreate): The user data to create.
+    :param db: (Session): The database session.
+
+    :return: (models.User): The created user object.
+    """
     db_user = crud.get_user_by_email(db, email=user.email)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
     return crud.create_user(db=db, user=user)
 
 
-@app.get("/users/",tags=["User"], response_model=list[schemas.User])
+@app.get("/users/", tags=["User"], response_model=list[schemas.User])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    """
+    Retrieves a list of users from the database.
+
+    :param skip: (int): The number of users to skip.
+    :param limit: (int): The number of users to retrieve.
+    :param db: (Session): The database session.
+
+    :return: list[models.User]: A list of user objects.
+    """
     users = crud.get_users(db, skip=skip, limit=limit)
     return users
 
 
-@app.post("/users/{user_id}/tasks/",tags=["Task"], response_model=schemas.Task)
+@app.post("/users/{user_id}/tasks/", tags=["Task"], response_model=schemas.Task)
 def create_task_for_user(
+
         user_id: int,
         item: schemas.TaskCreate,
         db: Session = Depends(get_db)
 ):
+    """
+    Creates a new task for a user in the database.
+
+    :param user_id: (int): The user id.
+    :param item: (schemas.TaskCreate): The task data to create.
+    :param db: (Session): The database session.
+
+    :return: (models.Task): The created task object.
+    """
     return crud.create_user_task(db=db, task=item, user_id=user_id)
 
 
-@app.get("/users/{user_id}/tasks/",tags=["Task"], response_model=list[schemas.Task])
+@app.get("/users/{user_id}/tasks/", tags=["Task"], response_model=list[schemas.Task])
 def read_tasks_by_user(user_id: int, db: Session = Depends(get_db)):
+    """
+    Retrieves a list of tasks for a user from the database.
+
+    :param user_id:(int): The user id.
+    :param db: (Session): The database session.
+
+    :return: (list[models.Task]): A list of task objects.
+    """
     tasks = crud.get_tasks_by_user(db, user_id=user_id)
     return tasks
 
 
-
-
 @app.put("/tasks/{task_id}", tags=["Task"], response_model=schemas.Task)
 def update_task_state(task_id: int, state: int, db: Session = Depends(get_db)):
+    """
+    Updates the state of a task in the database.
+
+    :param task_id: (int): The task id.
+    :param state: (int): The new state of the task.
+    :param db: (Session): The database session.
+
+    :return: (models.Task): The updated task object.
+    """
     return crud.update_task_state(db=db, task_id=task_id, state=state)
 
 

@@ -1,8 +1,12 @@
-# Taskaroo-backend
+# Taskaroo - Backend
 
-## Description
+## Descripción
 
-Este es el backend de la aplicación Taskaroo, una aplicación de gestión de tareas para cada uno de los usuarios creados en la aplicación. En este backend se encuentran las rutas y controladores necesarios para la creación, edición y visualización de tareas para cada uno de los usuarios que permite crear la aplicación. 
+Este es el backend de la aplicación Taskaroo, una aplicación de gestión de tareas para cada uno de los usuarios creados en la aplicación. En este backend se encuentran las rutas y controladores necesarios para la creación, edición y visualización de tareas para cada uno de los usuarios que permite crear la aplicación.
+
+## Demo
+
+Puede ver el funcionamiento del backend en el video: [Video](https://youtu.be/qD794SiPgqw)
 
 ## Tecnologías
 
@@ -44,6 +48,10 @@ http://localhost:8000/docs
 ## Uso
 
 Una vez el proyecto esté corriendo, puedes acceder a la documentación de la API en tu navegador y probar los diferentes endpoints que se encuentran disponibles. Adicionalmente puede dirigirse al repositorio del frontend de la aplicación [Taskaroo-frontend](https://github.com/sacastrot/taskaroo-frontend.git) para visualizar la aplicación completa.
+
+## Recomendación
+
+Considere agregar los dominios del frontend en la sección de configuración de CORS en el backend para evitar problemas de CORS en el frontend.
 
 ## Autor
 

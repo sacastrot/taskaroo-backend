@@ -1,10 +1,22 @@
-from pydantic import Field
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from .database import Base
 
 
 class User(Base):
+    """
+    Represents a user entity in the database.
+
+    Attributes:
+    - id (int): The unique identifier for the user (primary key).
+    - email (str): The email address of the user (unique).
+    - name (str): The name of the user.
+    - hashed_password (str): The hashed password of the user.
+    - is_active (bool): Indicates whether the user account is active (default is True).
+    - tasks (relationship): One-to-many relationship with Task entities, representing tasks owned by the user.
+
+    """
+
     __tablename__ = "user"
 
     id = Column(Integer, primary_key=True)
@@ -17,6 +29,20 @@ class User(Base):
 
 
 class Task(Base):
+
+    """
+    Represents a task entity in the database.
+
+    Attributes:
+    - id (int): The unique identifier for the task (primary key).
+    - title (str): The title of the task.
+    - description (str): The description of the task.
+    - state (int): The state of the task (default is 0).
+    - owner_id (int): The id of the user who owns the task.
+    - owner (relationship): Many-to-one relationship with User entity, representing the user who owns the task.
+
+    """
+
     __tablename__ = "task"
 
     id = Column(Integer, primary_key=True)
