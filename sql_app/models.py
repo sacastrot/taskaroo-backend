@@ -1,7 +1,17 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
-from sqlalchemy.orm import relationship
-from .database import Base
+"""
+This module contains the SQLAlchemy model classes for the database entities.
 
+SQLAlchemy is an Object-Relational Mapping (ORM) library for Python that provides a way to
+interact with databases using Python objects.
+
+"""
+
+# Third-party imports
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
+
+# Local imports (project-specific)
+from .database import Base
 
 class User(Base):
     """

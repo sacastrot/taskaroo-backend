@@ -1,19 +1,26 @@
+# Third-party imports
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
+# Local imports (project-specific)
 from . import crud, models, schemas
 from .database import SessionLocal, engine
-from fastapi.middleware.cors import CORSMiddleware
 
+# Create the database tables
 models.Base.metadata.create_all(bind=engine)
 
+# Create the FastAPI app
 app = FastAPI()
 
+# Add CORS middleware to allow requests from the frontend
 origins = [
     "http://localhost",
     "http://localhost:5173",
 ]
 
+
+# Add CORS middleware to allow requests from the frontend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -26,8 +33,16 @@ app.add_middleware(
 # Dependency
 def get_db():
     """
-    Create a new database session for the request.
-    :return: (Session): The database session.
+    Dependency to get a database session.
+
+    Args:
+    - None
+
+    Returns:
+    - Session: A SQLAlchemy session to the database.
+
+    Yields:
+    - Session: A SQLAlchemy session to the database.
     """
 
     db = SessionLocal()
@@ -42,10 +57,12 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     """
     Creates a new user in the database.
 
-    :param user: (schemas.UserCreate): The user data to create.
-    :param db: (Session): The database session.
+    Args:
+    - user (schemas.UserCreate): The user data to create.
+    - db (Session): The database session.
 
-    :return: (models.User): The created user object.
+    Returns:
+    - models.User: The created user object.
     """
     db_user = crud.get_user_by_email(db, email=user.email)
     if db_user:
@@ -58,11 +75,13 @@ def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     """
     Retrieves a list of users from the database.
 
-    :param skip: (int): The number of users to skip.
-    :param limit: (int): The number of users to retrieve.
-    :param db: (Session): The database session.
+    Args:
+    - skip (int): The number of users to skip.
+    - limit (int): The number of users to retrieve.
+    - db (Session): The database session.
 
-    :return: list[models.User]: A list of user objects.
+    Returns:
+    - list[models.User]: A list of user objects.
     """
     users = crud.get_users(db, skip=skip, limit=limit)
     return users
@@ -78,11 +97,13 @@ def create_task_for_user(
     """
     Creates a new task for a user in the database.
 
-    :param user_id: (int): The user id.
-    :param item: (schemas.TaskCreate): The task data to create.
-    :param db: (Session): The database session.
+    Args:
+    - user_id (int): The user id.
+    - item (schemas.TaskCreate): The task data to create.
+    - db (Session): The database session.
 
-    :return: (models.Task): The created task object.
+    Returns:
+    - models.Task: The created task object.
     """
     return crud.create_user_task(db=db, task=item, user_id=user_id)
 
@@ -92,10 +113,12 @@ def read_tasks_by_user(user_id: int, db: Session = Depends(get_db)):
     """
     Retrieves a list of tasks for a user from the database.
 
-    :param user_id:(int): The user id.
-    :param db: (Session): The database session.
-
-    :return: (list[models.Task]): A list of task objects.
+    Args:
+    - user_id (int): The user id.
+    - db (Session): The database session.
+    
+    Returns:
+    - list[models.Task]: A list of task objects.
     """
     tasks = crud.get_tasks_by_user(db, user_id=user_id)
     return tasks
@@ -106,35 +129,12 @@ def update_task_state(task_id: int, state: int, db: Session = Depends(get_db)):
     """
     Updates the state of a task in the database.
 
-    :param task_id: (int): The task id.
-    :param state: (int): The new state of the task.
-    :param db: (Session): The database session.
+    Args:
+    - task_id (int): The task id.
+    - state (int): The new state of the task.
+    - db (Session): The database session.
 
-    :return: (models.Task): The updated task object.
+    Returns:
+    - models.Task: The updated task object.
     """
     return crud.update_task_state(db=db, task_id=task_id, state=state)
-
-
-# @app.get("/users/{user_id}", response_model=schemas.User)
-# def read_user(user_id: int, db: Session = Depends(get_db)):
-#     db_user = crud.get_user(db, user_id=user_id)
-#     if db_user is None:
-#         raise HTTPException(status_code=404, detail="User not found")
-#     return db_user
-
-# @app.post("/tasks/", response_model=schemas.Task)
-# def create_task(task: schemas.TaskCreate, db: Session = Depends(get_db)):
-#     return crud.create_task(db=db, task=task)
-
-# @app.get("/tasks/", response_model=list[schemas.Task])
-# def read_task(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-#     tasks = crud.get_tasks(db, skip=skip, limit=limit)
-#     return tasks
-
-
-# @app.get("/tasks/{task_id}", response_model=schemas.Task)
-# def read_task(task_id: int, db: Session = Depends(get_db)):
-#     db_task = crud.get_task(db, task_id=task_id)
-#     if db_task is None:
-#         raise HTTPException(status_code=404, detail="Task not found")
-#     return db_task
