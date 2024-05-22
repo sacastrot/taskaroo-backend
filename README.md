@@ -1,12 +1,28 @@
 # Taskaroo - Backend
 
+## Tabla de contenido
+
+- [Descripción](#descripción)
+- [Sitio web](#sitio-web)
+- [Tecnologías](#tecnologías)
+- [Instalación](#instalación)
+- [Uso](#uso)
+- [Recomendación](#recomendación)
+- [Base de datos](#base-de-datos)
+  - [Relaciones](#relaciones)
+  - [Tabla users](#tabla-users)
+  - [Tabla tasks](#tabla-tasks)
+- [Estructura de archivos](#estructura-de-archivos)
+- [Rutas](#rutas)
+- [Autor](#autor)
+
 ## Descripción
 
 Este es el backend de la aplicación Taskaroo, una aplicación de gestión de tareas para cada uno de los usuarios creados en la aplicación. En este backend se encuentran las rutas y controladores necesarios para la creación, edición y visualización de tareas para cada uno de los usuarios que permite crear la aplicación.
 
-## Demo
+## Sitio web
 
-Puede ver el funcionamiento del backend en el video: [Video](https://youtu.be/qD794SiPgqw)
+La API se puede usar en el siguiente enlace: [Documentación de la API](https://taskaroo-backend-yjo8.onrender.com/docs)
 
 ## Tecnologías
 
@@ -87,7 +103,7 @@ Un usuario puede tener muchas tareas, pero una tarea solo puede pertenecer a un 
 | status | String | Estado de la tarea. |
 | owner_id | Integer | Identificador del usuario dueño de la tarea. |
 
-## Estrategias de archivos
+## Estructura de archivos
 
 El proyecto se encuentra organizado de la siguiente manera:
 
@@ -102,16 +118,44 @@ El proyecto se encuentra organizado de la siguiente manera:
   - **schemas**: Contiene las clases de los esquemas de los modelos. Que permiten la validación de los datos.
 
 ## Rutas
-Las rutas disponibles se pueden consultar en la documentación de la API en el navegador, FastAPI genera la documentación automáticamente en la ruta /docs.
+Las rutas disponibles se pueden consultar en la documentación de la API 
+en el navegador, FastAPI genera la documentación automáticamente 
+en la ruta: [End points](https://taskaroo-backend-yjo8.onrender.com/docs).
 
 En general hay rutas para:
-- Crear un usuario.
-- Obtener un usuario.
-- Obtener todos los usuarios.
-- Crear una tarea.
-- Obtener una tarea.
-- Obtener todas las tareas.
-- Actualizar una tarea.
+- **Crear usuario**:
+
+| Método | Ruta | Descripción |
+| --- | --- | --- |
+| POST | /users/ | Permite crear un usuario en la aplicación |
+
+
+- **Obtener todos los usuario**: 
+
+| Método | Ruta | Descripción |
+| --- | --- | --- |
+| GET | /users/ | Permite obtener todos los<br/> usuarios de la aplicación |
+
+- **Crear una tarea para un usuario**:
+
+| Método | Ruta | Descripción                                              |
+| --- | --- |----------------------------------------------------------|
+| POST | /users/{user_id}/tasks/ | Permite crear una tarea<br/> para un usuario en la aplicación |
+
+- **Obtener todas las tareas de un usuario**: GET: /users/{user_id}/tasks/
+
+
+| Método | Ruta | Descripción |
+| --- | --- | --- |
+| GET | /users/{user_id}/tasks/ | Permite obtener todas las tareas<br/> de un usuario en la aplicación |
+
+
+- **Actualizar una tarea de un usuario**: 
+
+
+| Método | Ruta              | Descripción |
+| --- |-------------------| --- |
+| PUT | /tasks/{task_id}/ | Permite actualizar una tarea<br/> de un usuario en la aplicación |
 
 ## Autor
 
