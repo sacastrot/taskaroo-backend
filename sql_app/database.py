@@ -27,7 +27,7 @@ db_port = os.getenv("DATABASE_PORT")
 
 
 # The database URL is in the format "dialect+driver://username:password@host:port/database"
-DATABASE_URL = f"mysql+pymysql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
+DATABASE_URL = f"postgresql://{db_user}:{db_password}@{db_host}/{db_name}"
 
 # Create the SQLAlchemy engine
 engine = create_engine(DATABASE_URL)

@@ -12,7 +12,6 @@ validate and serialize the data based on these models.
 from pydantic import BaseModel, ConfigDict
 
 
-
 class TaskBase(BaseModel):
     """
     TaskBase is a Pydantic model that defines the fields that are common to both the TaskCreate and Task models.
@@ -23,7 +22,7 @@ class TaskBase(BaseModel):
     """
 
     title: str
-    description: str | None = None
+    description: str
 
 
 class TaskCreate(TaskBase):
